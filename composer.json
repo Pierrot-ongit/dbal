@@ -23,7 +23,7 @@
         "docs": "https://docs.portphp.org"
     },
     "require": {
-        "portphp/portphp": "^1.0.0",
+        "portphp/portphp": "^1.0.0 || ^1.7",
         "doctrine/dbal": "^2.4 || ^3.3"
     },
     "autoload": {
