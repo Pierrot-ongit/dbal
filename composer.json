@@ -24,7 +24,7 @@
     },
     "require": {
         "portphp/portphp": "^1.0.0",
-        "doctrine/dbal": "^2.4"
+        "doctrine/dbal": "^2.4 || ^3.3"
     },
     "autoload": {
         "psr-4": {
