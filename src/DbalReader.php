@@ -159,8 +159,8 @@ class DbalReader implements CountableReader
             $this->stmt = $this->prepare($this->sql, $this->params);
         }
         if (0 !== $this->key) {
-            $this->stmt->execute();
-            $this->data = $this->stmt->fetch(\PDO::FETCH_ASSOC);
+            $result = $this->stmt->execute();
+            $this->data = $result->fetch(\PDO::FETCH_ASSOC);
             $this->key = 0;
         }
     }
