@@ -127,7 +127,8 @@ class DbalReader implements CountableReader
     public function next()
     {
         $this->key++;
-        $this->data = $this->stmt->fetch(\PDO::FETCH_ASSOC);
+        $result = $this->stmt->execute();
+        $this->data = $result->fetch(\PDO::FETCH_ASSOC);
     }
 
     /**
@@ -177,7 +178,7 @@ class DbalReader implements CountableReader
                 if (null === $this->stmt) {
                     $this->rewind();
                 }
-                $this->rowCount = $this->stmt->rowCount();
+                $this->rowCount = $this->stmt->execute()->rowCount();
             }
         }
 
