@@ -187,9 +187,9 @@ class DbalReader implements CountableReader
     private function doCalcRowCount()
     {
         $statement = $this->prepare(sprintf('SELECT COUNT(*) FROM (%s) AS port_cnt', $this->sql), $this->params);
-        $statement->execute();
+        $result = $statement->execute();
 
-        $this->rowCount = (int) $statement->fetchColumn(0);
+        $this->rowCount = (int) $result->fetchOne();
     }
 
     /**
