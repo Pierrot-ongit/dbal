@@ -22,9 +22,9 @@ class DbalReader implements CountableReader
     private $data;
 
     /**
-     * @var Statement
+     * @var \Doctrine\DBAL\Result
      */
-    private $stmt;
+    private $result;
 
     /**
      * @var string
@@ -105,7 +105,7 @@ class DbalReader implements CountableReader
     {
         $this->params = $params;
 
-        $this->stmt = null;
+        $this->result = null;
         $this->rowCount = null;
     }
 
@@ -127,8 +127,7 @@ class DbalReader implements CountableReader
     public function next()
     {
         $this->key++;
-        $result = $this->stmt->execute();
-        $this->data = $result->fetch(\PDO::FETCH_ASSOC);
+        $this->data = $this->result->fetch(\PDO::FETCH_ASSOC);
     }
 
     /**
@@ -156,12 +155,12 @@ class DbalReader implements CountableReader
      */
     public function rewind()
     {
-        if (null === $this->stmt) {
-            $this->stmt = $this->prepare($this->sql, $this->params);
+        if (null === $this->result) {
+            $stmt = $this->prepare($this->sql, $this->params);
+            $this->result = $stmt->executeQuery();
         }
         if (0 !== $this->key) {
-            $result = $this->stmt->execute();
-            $this->data = $result->fetch(\PDO::FETCH_ASSOC);
+            $this->data = $this->result->fetch(\PDO::FETCH_ASSOC);
             $this->key = 0;
         }
     }
@@ -175,10 +174,10 @@ class DbalReader implements CountableReader
             if ($this->rowCountCalculated) {
                 $this->doCalcRowCount();
             } else {
-                if (null === $this->stmt) {
+                if (null === $this->result) {
                     $this->rewind();
                 }
-                $this->rowCount = $this->stmt->execute()->rowCount();
+                $this->rowCount = $this->result->rowCount();
             }
         }
 
